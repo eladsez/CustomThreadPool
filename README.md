@@ -1,9 +1,9 @@
 # Threaded CMD Tool for Encryption and Decryption
 
 This is a CMD tool that implements a threadpool mechanism to parallelize an encryption algorithm provided in a shared library. The goal is to utilize multi-cores in a system to improve performance and speed up the encryption process. The encryption algorithm is not very efficient and takes 5ms for each character, with a limit of 1024 bytes of data. The tool takes input from stdIn and outputs the encrypted or decrypted data to stdOut.
-Usage
 
-### The CMD tool can be used with the following syntax:
+##Usage
+The CMD tool can be used with the following syntax:
 ````bash
 coder key [-e | -d] < input_file > output_file
 ````
