@@ -42,6 +42,10 @@ extern "C" {
  * Increase this constants at your own risk
  * Large values might slow down your system
  */
+
+#define <limits.h>
+#define MIN_THREAD_STACK PTHREAD_STACK_MIN + (sysconf(_SC_PAGESIZE) - PTHREAD_STACK_MIN)
+
 #define MAX_THREADS 64
 #define MAX_QUEUE 65536
 
