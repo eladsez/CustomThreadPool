@@ -2,17 +2,35 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "thread_pool.h"
 
-#define MAX_SIZE 1024 * 1024 // 1GB
+#define WRAP(curr) (e_d ? encrypt(global_data + curr, global_key) : decrypt(global_data + curr, global_key))
 
-void print_usage(){
-    printf("usage: ./Coder key [-e | -d] < input_file\n"
-                  "       ./Coder key [-e | -d] < input_file > _output_file\n"
-                  "       cat output_file | ./Coder key [-e | -d] > output_file\n");
+#define MAX_SIZE 1024 * 1024 // 1MB
+#define CHUNK_SIZE 1024
+
+
+char *global_data;
+int global_key;
+char e_d;
+
+void *wrap_crypt(void *p) {
+    p_safe_inc si = (p_safe_inc) p;
+    WRAP(si);
+    while (inc(si) != -1) {
+        WRAP(si);
+    }
+    return NULL;
 }
 
-int main(int argc, char *argv[]){
-    if (argc != 3){
+void print_usage() {
+    printf("Usage: ./Coder key [-e | -d] < input_file\n"
+           "       ./Coder key [-e | -d] < input_file > _output_file\n"
+           "       cat output_file | ./Coder key [-e | -d] > output_file\n");
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
         print_usage();
         return 0;
     }
@@ -25,21 +43,29 @@ int main(int argc, char *argv[]){
     bzero(data, MAX_SIZE);
 
     while ((c = getchar()) != EOF)
-      data[counter++] = c;
+        data[counter++] = c;
 
-    data[counter] = '\0';
-    if (strcmp(argv[2],"-e") == 0){
+    size_t chunks_amount = counter / CHUNK_SIZE;
+
+    global_data = data; // its never get segfault because the data local stacked in the main and if its get free the program finished
+    global_key = key;
+
+    if (!strcmp(argv[2], "-e")) {
         /* TODO: Add logic to split every 1024 chars and process with threadpool */
-        encrypt(data,key);
-    }
-    else if (strcmp(argv[2],"-d") == 0){
+        e_d = 1;
+    } else if (!strcmp(argv[2], "-d")) {
         /* TODO: Add logic to split every 1024 chars and process with threadpool */
-        decrypt(data,key);
-    }
-    else{
+        e_d = 0;
+    } else {
         print_usage();
         return 1;
     }
+
+    p_safe_inc si = create_safe_inc(chunks_amount);
+    p_thread_pool pool = create_pool(wrap_crypt, si);
+    start_pool(pool);
+    destroy_pool(pool);
+    destroy_safe_inc(si);
 
     printf("%s", data);
     return 0;

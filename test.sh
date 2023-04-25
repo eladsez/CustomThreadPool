@@ -2,17 +2,24 @@
 echo '=================Coder Test================='
 
 KEY=2
+CHAR_SIZE=100000
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 
 make all &> /dev/null
 
 # Generate 1000 characters
-echo "Generating 1000 characters..."
-bash build/lipsum.sh characters 1000 > /tmp/to_enc
+echo "Generating ${CHAR_SIZE} characters..."
+bash build/lipsum.sh characters $CHAR_SIZE > /tmp/to_enc
 
 echo "Encrypting..."
 ./Coder $KEY -e < /tmp/to_enc > /tmp/to_dec
+
+if diff /tmp/to_enc /tmp/to_dec; then
+    echo -e "${RED}Test failed (to_enc and to_dec files are the same)"
+    exit 1
+fi
+
 echo "Decrypting..."
 ./Coder $KEY -d < /tmp/to_dec > /tmp/decrypted
 
@@ -36,5 +43,5 @@ else
     echo -e "${RED}Test failed"
 fi
 
-rm /tmp/to_enc /tmp/to_dec /tmp/decrypted
+#rm /tmp/to_enc /tmp/to_dec /tmp/decrypted
 make clean > /dev/null
