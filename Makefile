@@ -8,12 +8,6 @@ ENC_LIB=./build/libCodec.so
 
 all: Coder
 
-encoder: $(OBJ_DIR)/basic_main.o
-	$(CC) $(OBJ_DIR)/basic_main.o $(ENC_LIB) -o encoder
-
-tester: $(OBJ_DIR)/stdin_main.o
-	$(CC) $(OBJ_DIR)/stdin_main.o $(ENC_LIB) -o tester
-
 Coder: $(OBJ_DIR)/coder.o
 	$(CC) $(OBJ_DIR)/coder.o $(ENC_LIB) -o Coder
 
