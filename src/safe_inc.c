@@ -21,7 +21,7 @@ void destroy_safe_inc(p_safe_inc si){
 
 int inc(p_safe_inc si){
     pthread_mutex_lock(&si->lock);
-    if (si->curr == si->top){
+    if (si->curr >= si->top){
         pthread_mutex_unlock(&si->lock);
         return -1;
     }

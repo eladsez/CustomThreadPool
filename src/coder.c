@@ -4,21 +4,20 @@
 #include <stdlib.h>
 #include "thread_pool.h"
 
-#define WRAP(curr) (e_d ? encrypt(global_data + curr, global_key) : decrypt(global_data + curr, global_key))
-
 #define MAX_SIZE 1024 * 1024 // 1MB
 #define CHUNK_SIZE 1024
 
+#define WRAP(curr) (e_d ? encrypt(global_data + curr * CHUNK_SIZE, global_key) : decrypt(global_data + curr * CHUNK_SIZE, global_key))
 
 char *global_data;
 int global_key;
 char e_d;
 
 void *wrap_crypt(void *p) {
-    p_safe_inc si = (p_safe_inc) p;
-    WRAP(si);
-    while (inc(si) != -1) {
-        WRAP(si);
+    args *arg = (args *) p;
+    WRAP(arg->init_val);
+    while (inc(arg->si) != -1) {
+        WRAP(arg->si->curr);
     }
     return NULL;
 }

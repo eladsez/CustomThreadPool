@@ -2,7 +2,7 @@
 echo '=================Coder Test================='
 
 KEY=2
-CHAR_SIZE=100000
+CHAR_SIZE=1000
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 

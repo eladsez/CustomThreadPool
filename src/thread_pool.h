@@ -20,7 +20,7 @@ struct thread_pool_t {
 
 typedef struct thread_pool_t *p_thread_pool;
 
-p_thread_pool create_pool(void* (func)(void *), p_safe_inc si); // threads_amount = 0 => use all available threads
+p_thread_pool create_pool(void* (func)(void *), p_safe_inc si);
 
 void destroy_pool(p_thread_pool pool);
 
