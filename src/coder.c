@@ -44,6 +44,11 @@ int main(int argc, char *argv[]) {
     while ((c = getchar()) != EOF)
         data[counter++] = c;
 
+    if (counter < 1){
+        printf("Error: input file is empty\n");
+        return 1;
+    }
+
     size_t chunks_amount = counter / CHUNK_SIZE;
 
     global_data = data; // its never get segfault because the data local stacked in the main and if its get free the program finished
@@ -66,6 +71,8 @@ int main(int argc, char *argv[]) {
     destroy_pool(pool);
     destroy_safe_inc(si);
 
-    printf("%s", data);
+    for (int i = 0; i < counter; ++i) {
+        printf("%c", data[i]);
+    }
     return 0;
 }

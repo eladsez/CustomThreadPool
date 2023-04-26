@@ -2,7 +2,7 @@
 echo '=================Coder Test================='
 
 KEY=2
-CHAR_SIZE=1000
+CHAR_SIZE=1000 # one hundred thousand characters
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 
@@ -13,15 +13,19 @@ echo "Generating ${CHAR_SIZE} characters..."
 bash build/lipsum.sh characters $CHAR_SIZE > /tmp/to_enc
 
 echo "Encrypting..."
+START=$SECONDS
 ./Coder $KEY -e < /tmp/to_enc > /tmp/to_dec
+echo "Time elapsed for encryption: $((SECONDS-START)) seconds"
 
-if diff /tmp/to_enc /tmp/to_dec; then
+if diff /tmp/to_enc /tmp/to_dec &> /dev/null; then
     echo -e "${RED}Test failed (to_enc and to_dec files are the same)"
     exit 1
 fi
 
 echo "Decrypting..."
+START=$SECONDS
 ./Coder $KEY -d < /tmp/to_dec > /tmp/decrypted
+echo "Time elapsed for decryption: $((SECONDS-START)) seconds"
 
 # check if the files exists
 if [ ! -f /tmp/to_enc ] || [ ! -f /tmp/to_dec ] || [ ! -f /tmp/decrypted ]; then
