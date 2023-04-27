@@ -1,11 +1,6 @@
 #include "thread_pool.h"
 #include <stdlib.h>
 
-#define MAX_THREADS 1000
-#define THREAD_STACK  65536
-
-
-
 p_thread_pool create_pool(void* (func)(void *), p_safe_inc si){
     p_thread_pool pool = (p_thread_pool) malloc(TH_POOL_SIZE);
     if (pool == NULL){
