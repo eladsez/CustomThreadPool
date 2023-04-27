@@ -9,13 +9,14 @@ GREEN='\033[0;32m'
 make all &> /dev/null
 
 # Generate 1000 characters
-echo "Generating ${CHAR_SIZE} characters..."
-bash build/lipsum.sh characters $CHAR_SIZE > /tmp/to_enc
+#echo "Generating ${CHAR_SIZE} characters..."
+#bash build/lipsum.sh characters $CHAR_SIZE > /tmp/to_enc
 
 echo "Encrypting..."
-START=$SECONDS
+TIMEFORMAT='Time elapsed for encryption: %R seconds.'
+time {
 ./Coder $KEY -e < /tmp/to_enc > /tmp/to_dec
-echo "Time elapsed for encryption: $((SECONDS-START)) seconds"
+}
 
 if diff /tmp/to_enc /tmp/to_dec &> /dev/null; then
     echo -e "${RED}Test failed (to_enc and to_dec files are the same)"
@@ -23,9 +24,11 @@ if diff /tmp/to_enc /tmp/to_dec &> /dev/null; then
 fi
 
 echo "Decrypting..."
-START=$SECONDS
+#START=$SECONDS
+TIMEFORMAT='Time elapsed for decryption: %R seconds.'
+time {
 ./Coder $KEY -d < /tmp/to_dec > /tmp/decrypted
-echo "Time elapsed for decryption: $((SECONDS-START)) seconds"
+}
 
 # check if the files exists
 if [ ! -f /tmp/to_enc ] || [ ! -f /tmp/to_dec ] || [ ! -f /tmp/decrypted ]; then

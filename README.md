@@ -2,6 +2,15 @@
 
 This is a CMD tool that implements a threadpool mechanism to parallelize an encryption algorithm provided in a shared library. The goal is to utilize multi-cores in a system to improve performance and speed up the encryption process. The encryption algorithm is not very efficient and takes 5ms for each character, with a limit of 1024 bytes of data. The tool takes input from stdIn and outputs the encrypted or decrypted data to stdOut.
 
+#### Project Structure
+
+    .
+    ├── docs                    # Documentation 
+    ├── src                     # Source files
+    ├── build                   # Compiled files
+    ├── LICENSE
+    └── README.md
+
 ## Usage 
 The CMD tool can be used with the following syntax:
 ````bash
@@ -38,10 +47,9 @@ The CMD tool implements a threadpool mechanism to parallelize the encryption or 
 
 The tool is designed to make efficient use of the available CPU cores on the system, maximizing the parallel processing capabilities and improving performance compared to a single-threaded approach. 
 
-## More Information
 The CMD tool is expected to be thoroughly tested, including both functional and performance testing. Automatic tests may be conducted to evaluate the correctness and efficiency of the tool. It is recommended to test the tool with various input sizes, encryption keys, and system configurations to ensure its robustness and reliability.
-Conclusion
 
+## Conclusion
 This CMD tool provides a threaded solution for encrypting and decrypting data using a shared library with an inefficient encryption algorithm. By parallelizing the encryption process, it aims to improve performance and utilize multi-cores in a system effectively. Proper synchronization techniques are implemented to ensure thread safety.
 
 ## License
