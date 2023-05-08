@@ -3,7 +3,7 @@
 
 #include "safe_inc.h"
 
-#define MAX_THREADS 1000
+#define MAX_THREADS 100
 #define THREAD_STACK  65536
 
 #define TH_POOL_SIZE sizeof(struct thread_pool_t)

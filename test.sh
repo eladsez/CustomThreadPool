@@ -15,7 +15,7 @@ make all &> /dev/null
 echo "Encrypting..."
 TIMEFORMAT='Time elapsed for encryption: %R seconds.'
 time {
-./Coder $KEY -e < /tmp/to_enc > /tmp/to_dec
+./coder $KEY -e < /tmp/to_enc > /tmp/to_dec
 }
 
 if diff /tmp/to_enc /tmp/to_dec &> /dev/null; then
@@ -27,7 +27,7 @@ echo "Decrypting..."
 #START=$SECONDS
 TIMEFORMAT='Time elapsed for decryption: %R seconds.'
 time {
-./Coder $KEY -d < /tmp/to_dec > /tmp/decrypted
+./coder $KEY -d < /tmp/to_dec > /tmp/decrypted
 }
 
 # check if the files exists
