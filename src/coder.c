@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include "thread_pool.h"
 
-#define MAX_SIZE 1024 * 1024 // 1MB
 #define MAX_CHUNK_SIZE 1024
 
 #define WRAP(data) (e_d ? encrypt(data, global_key) : decrypt(data, global_key))
@@ -45,7 +44,7 @@ int main(int argc, char *argv[]) {
         print_usage();
         return 0;
     }
-
+    int MAX_SIZES[3] = {1024 * 1024 * 1024, 1024 * 1024, 1024 * 512};
     int key = atoi(argv[1]);
 
     if (!strcmp(argv[2], "-e")) {
@@ -59,20 +58,49 @@ int main(int argc, char *argv[]) {
 
     char c;
     int counter = 0;
-    char data[MAX_SIZE];
-    bzero(data, MAX_SIZE);
+//    char data[MAX_SIZE];
+    char *data = NULL;
+    int i;
+    for (i = 0; i < 3 && data == NULL; ++i) {
+        data = (char *) malloc(MAX_SIZES[i]);
+    }
 
-    while ((c = getchar()) != EOF)
+    if (data == NULL) {
+        perror("malloc ERROR");
+        printf("your testing environment is crappy men\n");
+        return 1;
+    }
+
+    bzero(data, MAX_SIZES[i]);
+
+
+    while ((c = getchar()) != EOF) {
+        if (counter >= MAX_SIZES[i]) {
+            printf("Error: input file is too big your system is crappy\n");
+            free(data);
+            return 1;
+        }
         data[counter++] = c;
+    }
+
+    data = realloc(data, counter);
+    if (data == NULL) {
+        perror("realloc ERROR");
+        return 1;
+    }
 
     if (counter < 1){
         printf("Error: input file is empty\n");
+        free(data);
         return 1;
     }
 
     chunk_size = counter / MAX_THREADS;
     if (chunk_size > MAX_CHUNK_SIZE) {
         chunk_size = MAX_CHUNK_SIZE;
+    }
+    if (chunk_size < 1) {
+        chunk_size = 1;
     }
 
     size_t chunks_amount = counter / chunk_size;
@@ -89,5 +117,6 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < counter; ++i) {
         printf("%c", data[i]);
     }
+    free(data);
     return 0;
 }

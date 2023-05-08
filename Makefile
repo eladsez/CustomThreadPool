@@ -14,7 +14,7 @@ serial_coder: $(OBJ_DIR)/serial_coder.o
 	$(CC) $(OBJ_DIR)/serial_coder.o $(ENC_LIB) -o serial_coder
 
 coder: $(OBJ_DIR)/coder.o $(OBJ_DIR)/thread_pool.a $(OBJ_DIR)/safe_inc.a
-	$(CC) $(OBJ_DIR)/coder.o $(ENC_LIB) -o Coder -lpthread $(OBJ_DIR)/safe_inc.a $(OBJ_DIR)/thread_pool.a
+	$(CC) $(OBJ_DIR)/coder.o $(ENC_LIB) -o coder -lpthread $(OBJ_DIR)/safe_inc.a $(OBJ_DIR)/thread_pool.a
 
 $(OBJ_DIR)/thread_pool.a: $(OBJ_DIR)/thread_pool.o $(OBJ_DIR)/safe_inc.a
 	$(AR) $(AR_FLAGS) $@ $^ -lpthread

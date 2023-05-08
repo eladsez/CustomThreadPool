@@ -9,8 +9,8 @@ GREEN='\033[0;32m'
 make all &> /dev/null
 
 # Generate 1000 characters
-#echo "Generating ${CHAR_SIZE} characters..."
-#bash build/lipsum.sh characters $CHAR_SIZE > /tmp/to_enc
+echo "Generating ${CHAR_SIZE} characters..."
+bash build/lipsum.sh characters $CHAR_SIZE > /tmp/to_enc
 
 echo "Encrypting..."
 TIMEFORMAT='Time elapsed for encryption: %R seconds.'
